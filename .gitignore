@@ -1,4 +1,5 @@
 /config/settings.yml
+/config/secret.txt
 /config/redis/development.conf
 /config/redis/test.conf
 /db/redis/development
