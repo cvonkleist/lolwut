@@ -1,6 +1,6 @@
 ## How lolwut is different
 
-lolwut is just like the default Monk framework, except for these differences:
+lolwut is just like the default Monk skeleton, except for these differences:
 
 ### Testing with RSpec
 
@@ -8,9 +8,9 @@ Testing is done with RSpec and Webrat instead of Webrat and Contest/Stories.
 
 ### Session security
 
-The default Monk framework doesn't use a secret key for ensuring session data
+The default Monk skeleton doesn't use a secret key for ensuring session data
 integrity.  I think a lot of people don't realize how much of a security threat
-this is, so my framework creates a random key in `config/secret.txt` the first
+this is, so my skeleton creates a random key in `config/secret.txt` the first
 time the app is run.
 
 ## Using lolwut
