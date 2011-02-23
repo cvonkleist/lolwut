@@ -12,20 +12,6 @@ class Monk < Thor
     end
   end
 
-  desc "stories", "Run user stories."
-  method_option :pdf, :type => :boolean
-  def stories
-    $:.unshift(Dir.pwd, "test")
-
-    ARGV << "-r"
-    ARGV << (options[:pdf] ? "stories-pdf" : "stories")
-    ARGV.delete("--pdf")
-
-    Dir["test/stories/*_test.rb"].each do |file|
-      load file
-    end
-  end
-
   desc "start ENV", "Start Monk in the supplied environment"
   def start(env = ENV["RACK_ENV"] || "development")
     verify_config(env)

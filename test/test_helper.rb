@@ -3,9 +3,8 @@ ENV['RACK_ENV'] = 'test'
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "init"))
 
 require "rack/test"
-require "contest"
-require "override"
-require "quietbacktrace"
+require 'webrat'
+require 'rspec'
 
 begin
   puts "Connected to Redis #{Ohm.redis.info[:redis_version]} on #{monk_settings(:redis)[:host]}:#{monk_settings(:redis)[:port]}, database #{monk_settings(:redis)[:db]}."
@@ -27,16 +26,23 @@ rescue Errno::ECONNREFUSED
   exit 1
 end
 
-class Test::Unit::TestCase
-  include Rack::Test::Methods
-
-  def setup
-    # Uncomment if you want to reset the database
-    # before each test.
-    # Ohm.flush
+RSpec.configure do |conf|
+  conf.include Rack::Test::Methods
+  conf.include Webrat::Methods
+  conf.include Webrat::Matchers # require for "should contain(...)"
+  def app
+    Main
   end
 
-  def app
-    Main.new
+  def body
+    last_response.body
+  end
+
+  def flush_db
+    Ohm.flush if monk_settings(:redis)[:db] == 15 # paranoia to prevent wiping out a prod database somehow
+  end
+
+  conf.before(:each) do
+    flush_db
   end
 end
